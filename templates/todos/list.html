@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="http://localhost:8000/accounts/login">login</a>
+<a href="http://localhost:8000/todos/add">add task</a>
+<a href="http://localhost:8000/users/profile">profile</a>
+<a href="http://localhost:8000/accounts/logout">logout</a>
+<a href="http://localhost:8000/todos/all">See All</a>
+
+    <h1>Hello {{ user.username }}</h1>
+
+<form action="{% url 'add' %}" method="POST">
+    {% csrf_token %}
+    title: <br> <input type="text" name="title" placeholder="enter todo title"><br>
+    description:<br> <textarea name="text" id="" cols="30" rows="10">type todo description here</textarea><br>
+    status: <br> <select name="status"><br>
+        <option value="True">True</option>
+        <option value="False">False</option>
+      </select> 
+      <br>
+    <input type="submit" value="add">
+</form>
+<ul>
+    {% for todo in todos %}
+        <li><a href="http://localhost:8000/todos/details/{{ todo.id }}">{{ todo.title }}</a></li>
+        <p   {% if todo.status %}
+        class="true"
+        {% endif %}
+        >{{ todo.text }}</p>
+        <p>{{ todo.status }}</p>
+        <a href="{% url 'mark' todo.id %}">Mark done</a>
+
+    {% empty %}
+        <p>you have nothing to do.</p>
+    {% endfor %}
+</ul>
+{% endblock %}
